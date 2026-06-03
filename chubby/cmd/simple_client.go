@@ -12,7 +12,7 @@ import (
 	"syscall"
 )
 
-var simple_client_id		string		// ID of this client.
+var simple_client_id string // ID of this client.
 
 func init() {
 	flag.StringVar(&simple_client_id, "clientID", "simple_client", "ID of this client")

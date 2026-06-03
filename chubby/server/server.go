@@ -16,9 +16,9 @@
 package server
 
 import (
+	"cos518project/chubby/api"
 	"cos518project/chubby/config"
 	"cos518project/chubby/store"
-	"cos518project/chubby/api"
 	"fmt"
 	"log"
 	"net"
@@ -57,11 +57,11 @@ func Run(conf *config.Config) {
 
 	// Init app struct.
 	app = &App{
-		logger:		log.New(os.Stderr, "[server] ", log.LstdFlags),
-		store:		store.New(conf.RaftDir, conf.RaftBind, conf.InMem),
-		address: 	conf.Listen,
-		locks:		make(map[api.FilePath]*Lock),
-		sessions:	make(map[api.ClientID]*Session),
+		logger:   log.New(os.Stderr, "[server] ", log.LstdFlags),
+		store:    store.New(conf.RaftDir, conf.RaftBind, conf.InMem),
+		address:  conf.Listen,
+		locks:    make(map[api.FilePath]*Lock),
+		sessions: make(map[api.ClientID]*Session),
 	}
 
 	// Open the store.
@@ -107,4 +107,24 @@ func Run(conf *config.Config) {
 
 	// Accept connections.
 	rpc.Accept(app.listener)
+}
+
+// ---------------------------------------------------------
+// TÍNH NĂNG MỚI 1: API Status - Xử lý truy vấn trạng thái
+// ---------------------------------------------------------
+
+func (h *Handler) Status(req api.StatusRequest, resp *api.StatusResponse) error {
+	app.logger.Printf("Da nhan yeu cau kiem tra Status tu Client!")
+
+	// 1. Lấy trạng thái hiện tại (Leader, Follower, Candidate)
+	resp.NodeRole = app.store.Raft.State().String()
+
+	// 2. Lấy thông số nhiệm kỳ (term) từ bộ thống kê
+	stats := app.store.Raft.Stats()
+	resp.Term = stats["term"]
+
+	// 3. Lấy địa chỉ của Leader hiện tại trong cụm
+	resp.LeaderAddress = string(app.store.Raft.Leader())
+
+	return nil
 }

@@ -48,7 +48,7 @@ func main() {
 				log.Fatal(err)
 			}
 			content, err := sess.ReadContent("Lock/Lock1")
-		        if err != nil {
+		    	if err != nil {
                 		log.Fatal(err)
        			} else {
                 		fmt.Printf("Read Content is %s\n",content)

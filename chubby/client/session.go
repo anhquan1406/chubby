@@ -465,3 +465,5 @@ func (sess *ClientSession) WriteContent(filePath api.FilePath, content string) (
 func (sess *ClientSession) IsExpired() bool {
 	return sess.expired
 }
+// --- THÊM VÀO CUỐI FILE client/session.go ---
+

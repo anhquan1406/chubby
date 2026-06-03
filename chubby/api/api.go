@@ -9,10 +9,11 @@ import "time"
  */
 
 type ClientID string
-type FilePath 	string
+type FilePath string
 
 // Mode of a lock
-type LockMode	int
+type LockMode int
+
 const (
 	EXCLUSIVE LockMode = iota
 	SHARED
@@ -33,7 +34,7 @@ type InitSessionResponse struct {
 type KeepAliveRequest struct {
 	ClientID ClientID
 	// Session information:
-	Locks		map[FilePath]LockMode  // Locks held by the client.
+	Locks map[FilePath]LockMode // Locks held by the client.
 }
 
 type KeepAliveResponse struct {
@@ -48,7 +49,6 @@ type OpenLockRequest struct {
 }
 
 type OpenLockResponse struct {
-
 }
 
 type DeleteLockRequest struct {
@@ -57,13 +57,12 @@ type DeleteLockRequest struct {
 }
 
 type DeleteLockResponse struct {
-
 }
 
 type TryAcquireLockRequest struct {
 	ClientID ClientID
 	Filepath FilePath
-	Mode LockMode
+	Mode     LockMode
 }
 
 type TryAcquireLockResponse struct {
@@ -76,7 +75,6 @@ type ReleaseLockRequest struct {
 }
 
 type ReleaseLockResponse struct {
-
 }
 
 type ReadRequest struct {
@@ -91,9 +89,27 @@ type ReadResponse struct {
 type WriteRequest struct {
 	ClientID ClientID
 	Filepath FilePath
-	Content string
+	Content  string
 }
 
 type WriteResponse struct {
 	IsSuccessful bool
 }
+
+// ---------------------------------------------------------
+// TÍNH NĂNG MỚI: Truy vấn trạng thái (Status) của Server
+// ---------------------------------------------------------
+
+type StatusRequest struct {
+	// Request này không cần gửi tham số gì lên cả
+}
+
+type StatusResponse struct {
+	NodeRole      string // Vai trò: Leader, Follower, hoặc Candidate
+	Term          string // Nhiệm kỳ hiện tại
+	LeaderAddress string // Địa chỉ của Leader hiện tại trong hệ thống
+}
+
+
+
+
