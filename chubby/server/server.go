@@ -114,8 +114,6 @@ func Run(conf *config.Config) {
 // ---------------------------------------------------------
 
 func (h *Handler) Status(req api.StatusRequest, resp *api.StatusResponse) error {
-	app.logger.Printf("Da nhan yeu cau kiem tra Status tu Client!")
-
 	// 1. Lấy trạng thái hiện tại (Leader, Follower, Candidate)
 	resp.NodeRole = app.store.Raft.State().String()
 
@@ -125,6 +123,13 @@ func (h *Handler) Status(req api.StatusRequest, resp *api.StatusResponse) error 
 
 	// 3. Lấy địa chỉ của Leader hiện tại trong cụm
 	resp.LeaderAddress = string(app.store.Raft.Leader())
+
+	// 4. BƠM DỮ LIỆU: Lật sổ hộ khẩu lấy tên khách hàng đang Active
+	var clients []string
+	for clientID := range app.sessions {
+		clients = append(clients, string(clientID))
+	}
+	resp.ActiveClients = clients
 
 	return nil
 }

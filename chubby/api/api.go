@@ -105,11 +105,8 @@ type StatusRequest struct {
 }
 
 type StatusResponse struct {
-	NodeRole      string // Vai trò: Leader, Follower, hoặc Candidate
-	Term          string // Nhiệm kỳ hiện tại
-	LeaderAddress string // Địa chỉ của Leader hiện tại trong hệ thống
+	NodeRole      string   // Vai trò: Leader, Follower, hoặc Candidate
+	Term          string   // Nhiệm kỳ hiện tại
+	LeaderAddress string   // Địa chỉ của Leader hiện tại trong hệ thống
+	ActiveClients []string // TÍNH NĂNG MỚI: Chứa danh sách tên khách hàng đang online
 }
-
-
-
-
